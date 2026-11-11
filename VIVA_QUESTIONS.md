@@ -2,7 +2,7 @@
 ## Disk Scheduling Algorithm Simulator – Viva Preparation Guide
 
 **Institution:** Seshadripuram Institute of Technology, Mysuru  
-**Department:** Computer Science and Engineering  
+**Department:** Information Science and Engineering (ISE)  
 **Academic Year:** 2026–2027  
 **Project Team:**
 - Shariffa Zainab (USN: `4PQ25IS022`)

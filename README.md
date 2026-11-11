@@ -3,7 +3,7 @@
 
 An interactive, web-based simulation and visual evaluation suite for Operating Systems secondary storage disk scheduling algorithms.
 
-Developed as an academic mini-project for the **Operating Systems course (1BCS304)**, **Department of Computer Science and Engineering**, **Seshadripuram Institute of Technology, Mysuru**, affiliated with **Visvesvaraya Technological University (VTU), Belagavi**.
+Developed as an academic mini-project for the **Operating Systems course (1BCS304)**, **Department of Information Science and Engineering (ISE)**, **Seshadripuram Institute of Technology, Mysuru**, affiliated with **Visvesvaraya Technological University (VTU), Belagavi**.
 
 ---
 
@@ -15,13 +15,13 @@ Developed as an academic mini-project for the **Operating Systems course (1BCS30
 | **Course Title** | Operating Systems |
 | **Course Code** | 1BCS304 |
 | **Institution** | Seshadripuram Institute of Technology, Mysuru |
-| **Department** | Department of Computer Science and Engineering |
+| **Department** | Department of Information Science and Engineering (ISE) |
 | **Academic Year** | 2026–2027 |
 | **Affiliation** | Visvesvaraya Technological University (VTU), Belagavi |
 
 ### Project Team
-1. **Shariffa Zainab** — USN: `4PQ25IS022` (Information Science & Engineering)
-2. **Spoorthy CM** — USN: `4PQ25IS028` (Information Science & Engineering)
+1. **Shariffa Zainab** — USN: `4PQ25IS022` (Department of Information Science and Engineering)
+2. **Spoorthy CM** — USN: `4PQ25IS028` (Department of Information Science and Engineering)
 
 ### Project Guide
 - **Srinidhi H R**, Assistant Professor, Department of Computer Science and Engineering, Seshadripuram Institute of Technology, Mysuru

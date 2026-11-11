@@ -18,7 +18,7 @@ export function exportComparisonToCSV(comparisonData, inputParams) {
 
   // Header and Metadata
   lines.push('DISK SCHEDULING ALGORITHM SIMULATOR - PERFORMANCE REPORT');
-  lines.push('Operating Systems (1BCS304) - Department of CSE, Seshadripuram Institute of Technology, Mysuru');
+  lines.push('Operating Systems (1BCS304) - Department of Information Science and Engineering (ISE), Seshadripuram Institute of Technology, Mysuru');
   lines.push(`Generated On: ${new Date().toLocaleString()}`);
   lines.push('');
   lines.push('--- SIMULATION PARAMETERS ---');
