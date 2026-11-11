@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disk Scheduling Algorithm Simulator – Performance Comparison & Visualization</title>
+  <meta name="description" content="Academic Disk Scheduling Algorithm Simulator for Operating Systems (1BCS304), Seshadripuram Institute of Technology, Mysuru (VTU)" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="theme-navy">
+  <!-- Application Shell -->
+  <div id="app" class="app-layout">
+    <!-- Top Navigation Bar -->
+    <header class="app-header">
+      <div class="header-branding">
+        <div class="branding-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div class="branding-text">
+          <span class="branding-title">Disk Scheduling Simulator</span>
+          <span class="branding-academic">VTU OS Mini-Project (1BCS304) • SIT Mysuru</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="app-nav" aria-label="Main Navigation">
+        <button class="nav-tab active" data-tab="dashboard">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-tab" data-tab="input">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Disk Input</span>
+        </button>
+        <button class="nav-tab" data-tab="simulator">
+          <span class="nav-icon">💽</span>
+          <span class="nav-label">Simulator</span>
+        </button>
+        <button class="nav-tab" data-tab="comparison">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Comparison</span>
+        </button>
+        <button class="nav-tab" data-tab="learn">
+          <span class="nav-icon">📚</span>
+          <span class="nav-label">Learn Theory</span>
+        </button>
+        <button class="nav-tab" data-tab="about">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-label">About Project</span>
+        </button>
+      </nav>
+
+      <!-- Header Quick Actions -->
+      <div class="header-actions">
+        <button id="btn-header-export" class="btn btn-sm btn-outline" title="Export Comparison CSV">
+          <span>📥</span> CSV
+        </button>
+        <button id="btn-header-print" class="btn btn-sm btn-ghost" title="Print Academic Report">
+          <span>🖨️</span> Print
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Viewport Container -->
+    <main class="app-main">
+      <!-- 1. DASHBOARD TAB -->
+      <section id="tab-dashboard" class="tab-pane active" aria-labelledby="tab-dashboard">
+        <div id="dashboard-content"></div>
+      </section>
+
+      <!-- 2. DISK INPUT TAB -->
+      <section id="tab-input" class="tab-pane" aria-labelledby="tab-input">
+        <div id="input-component-container"></div>
+      </section>
+
+      <!-- 3. ALGORITHM SIMULATOR TAB -->
+      <section id="tab-simulator" class="tab-pane" aria-labelledby="tab-simulator">
+        <div class="simulator-wrapper">
+          <!-- Algorithm Selection Toolbar -->
+          <div class="simulator-toolbar">
+            <div class="sim-algo-selector">
+              <span class="toolbar-label">Active Algorithm:</span>
+              <div class="algo-pill-group" id="algo-pill-group">
+                <button class="algo-pill active" data-algo="fcfs">FCFS</button>
+                <button class="algo-pill" data-algo="sstf">SSTF</button>
+                <button class="algo-pill" data-algo="scan">SCAN</button>
+                <button class="algo-pill" data-algo="cscan">C-SCAN</button>
+                <button class="algo-pill" data-algo="look">LOOK</button>
+                <button class="algo-pill" data-algo="clook">C-LOOK</button>
+              </div>
+            </div>
+            <div class="sim-quick-actions">
+              <button id="btn-sim-recalculate" class="btn btn-sm btn-outline">
+                <span>🔄</span> Recalculate
+              </button>
+              <button id="btn-sim-go-compare" class="btn btn-sm btn-primary">
+                <span>📊</span> Compare All 6
+              </button>
+            </div>
+          </div>
+
+          <!-- Real-Time Metrics HUD (Heads-Up Display) -->
+          <div id="visualizer-hud"></div>
+
+          <!-- Playback Controls Bar -->
+          <div id="visualizer-controls"></div>
+
+          <!-- Visualizations Grid -->
+          <div class="visualizer-dual-view">
+            <!-- View A: 1D Physical Cylinder Track -->
+            <div class="view-panel view-track-panel">
+              <div id="visualizer-track"></div>
+            </div>
+
+            <!-- View B: 2D Seek Trajectory Graph (OS Textbook) -->
+            <div class="view-panel view-trajectory-panel">
+              <div id="visualizer-trajectory"></div>
+            </div>
+          </div>
+
+          <!-- Algorithm Educational Walkthrough Card -->
+          <div class="sim-detail-card" id="sim-algorithm-walkthrough">
+            <div class="sim-meta-row">
+              <div>
+                <h4 id="walkthrough-title" class="sim-algo-heading">First Come First Serve (FCFS)</h4>
+                <p id="walkthrough-desc" class="sim-algo-text">
+                  Services disk requests strictly in their arrival sequence. Simple and starvation-free, but suffers from high average seek time.
+                </p>
+              </div>
+              <div class="sim-complexity-badge" id="walkthrough-complexity">
+                Time Complexity: <strong>O(N)</strong>
+              </div>
+            </div>
+            <div class="sim-sequence-row">
+              <span class="seq-label">Executed Seek Sequence:</span>
+              <div id="walkthrough-sequence" class="seq-display-box"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. PERFORMANCE COMPARISON TAB -->
+      <section id="tab-comparison" class="tab-pane" aria-labelledby="tab-comparison">
+        <div class="comparison-wrapper">
+          <div class="comparison-header-row">
+            <div>
+              <h2 class="section-title"><i class="icon-dashboard"></i> Multi-Algorithm Performance Comparison</h2>
+              <p class="section-desc">Side-by-side evaluation of all six algorithms executed under identical disk geometry and queue workloads.</p>
+            </div>
+            <div class="comparison-actions">
+              <button id="btn-compare-csv" class="btn btn-secondary">
+                <span>📥</span> Export CSV Report
+              </button>
+              <button id="btn-compare-print" class="btn btn-outline">
+                <span>🖨️</span> Print / Save PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- Best Performer Highlight Banner -->
+          <div id="comparison-best-banner"></div>
+
+          <!-- Master Comparison Table -->
+          <div class="card comparison-table-card">
+            <div class="card-header">
+              <h3><i class="icon-table"></i> Metric Comparison Table</h3>
+              <span class="card-caption">All calculations derived directly from physical seek paths.</span>
+            </div>
+            <div id="comparison-table-container"></div>
+          </div>
+
+          <!-- Chart.js Graphical Comparisons -->
+          <div id="comparison-charts-container"></div>
+
+          <!-- Detailed Step Mathematical Traces -->
+          <div id="comparison-traces-container"></div>
+        </div>
+      </section>
+
+      <!-- 5. LEARN ALGORITHMS TAB -->
+      <section id="tab-learn" class="tab-pane" aria-labelledby="tab-learn">
+        <div id="learn-content"></div>
+      </section>
+
+      <!-- 6. ABOUT PROJECT TAB -->
+      <section id="tab-about" class="tab-pane" aria-labelledby="tab-about">
+        <div class="about-wrapper">
+          <div class="about-hero-card">
+            <div class="sit-crest-badge">
+              <span class="crest-icon">🏛️</span>
+              <span class="crest-text">VTU Affiliated Institution</span>
+            </div>
+            <h2 class="about-title">Disk Scheduling Algorithms: Performance Comparison and Visualization</h2>
+            <p class="about-lead">
+              An Academic Mini-Project for the Course <strong>Operating Systems (1BCS304)</strong>
+            </p>
+            <div class="about-institution-badge">
+              <strong>Department of Computer Science and Engineering</strong>
+              <span>Seshadripuram Institute of Technology, Mysuru</span>
+              <span class="academic-session">Academic Year: 2026–2027</span>
+            </div>
+          </div>
+
+          <!-- Project Team and Guide Cards -->
+          <div class="about-grid">
+            <!-- Project Team Card -->
+            <div class="about-card team-card">
+              <div class="about-card-header">
+                <span class="about-card-icon">👥</span>
+                <h3>Project Team</h3>
+              </div>
+              <div class="team-members-list">
+                <div class="team-member-item">
+                  <div class="member-avatar">SZ</div>
+                  <div class="member-details">
+                    <h4 class="member-name">Shariffa Zainab</h4>
+                    <span class="member-usn">USN: <code>4PQ25IS022</code></span>
+                    <span class="member-role">Student, Information Science & Engineering</span>
+                  </div>
+                </div>
+
+                <div class="team-member-item">
+                  <div class="member-avatar">SC</div>
+                  <div class="member-details">
+                    <h4 class="member-name">Spoorthy CM</h4>
+                    <span class="member-usn">USN: <code>4PQ25IS028</code></span>
+                    <span class="member-role">Student, Information Science & Engineering</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Guide Card -->
+            <div class="about-card guide-card">
+              <div class="about-card-header">
+                <span class="about-card-icon">👨‍🏫</span>
+                <h3>Project Guide</h3>
+              </div>
+              <div class="guide-item">
+                <div class="guide-avatar">SH</div>
+                <div class="guide-details">
+                  <h4 class="guide-name">Srinidhi H R</h4>
+                  <span class="guide-designation">Assistant Professor</span>
+                  <span class="guide-dept">Department of Computer Science and Engineering</span>
+                  <span class="guide-inst">Seshadripuram Institute of Technology, Mysuru</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course Curriculum Card -->
+            <div class="about-card course-card">
+              <div class="about-card-header">
+                <span class="about-card-icon">📖</span>
+                <h3>Course Information</h3>
+              </div>
+              <ul class="course-meta-list">
+                <li><strong>Course Title:</strong> Operating Systems</li>
+                <li><strong>Course Code:</strong> 1BCS304</li>
+                <li><strong>Semester:</strong> 3rd / 4th Semester (2nd Year)</li>
+                <li><strong>University:</strong> Visvesvaraya Technological University (VTU), Belagavi</li>
+                <li><strong>Module Reference:</strong> Module 5 – Secondary Storage Structure & Disk Scheduling</li>
+              </ul>
+            </div>
+
+            <!-- Engineering Architecture Card -->
+            <div class="about-card arch-card">
+              <div class="about-card-header">
+                <span class="about-card-icon">🏗️</span>
+                <h3>Engineering Architecture</h3>
+              </div>
+              <div class="arch-flow-diagram">
+                <code>USER INPUT → VALIDATION → SCHEDULER ENGINE → MOVEMENT CALCULATION → VISUALIZATION & COMPARISON → OUTPUT</code>
+              </div>
+              <p class="arch-note">
+                Built strictly with Vanilla JavaScript (ES6+), HTML5 Canvas/SVG, CSS3, and Chart.js. 
+                Runs 100% client-side in the browser with zero hardcoded calculations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span>© 2026–2027 Department of CSE, Seshadripuram Institute of Technology, Mysuru.</span>
+      </div>
+      <div class="footer-center">
+        <span>Operating Systems (1BCS304) Mini-Project • Team: Shariffa Zainab (4PQ25IS022) & Spoorthy CM (4PQ25IS028)</span>
+      </div>
+      <div class="footer-right">
+        <span class="status-indicator-live">● Engine Verified (27/27 Tests Passed)</span>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
