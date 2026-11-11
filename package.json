@@ -12,10 +12,10 @@
     "test": "node tests/algorithms.test.js"
   },
   "dependencies": {
-    "@rollup/wasm-node": "^4.68.2",
     "chart.js": "^4.4.8"
   },
   "devDependencies": {
+    "@rollup/wasm-node": "^4.68.2",
     "vite": "^6.2.0"
   }
 }
